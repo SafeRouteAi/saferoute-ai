@@ -17,6 +17,7 @@ import { Route as AuthenticatedTextDetectRouteImport } from './routes/_authentic
 import { Route as AuthenticatedRoutesMapRouteImport } from './routes/_authenticated/routes-map'
 import { Route as AuthenticatedPlacesRouteImport } from './routes/_authenticated/places'
 import { Route as AuthenticatedGuardianRouteImport } from './routes/_authenticated/guardian'
+import { Route as AuthenticatedFakeCallRouteImport } from './routes/_authenticated/fake-call'
 import { Route as AuthenticatedContactsRouteImport } from './routes/_authenticated/contacts'
 
 const AuthRoute = AuthRouteImport.update({
@@ -58,6 +59,11 @@ const AuthenticatedGuardianRoute = AuthenticatedGuardianRouteImport.update({
   path: '/guardian',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedFakeCallRoute = AuthenticatedFakeCallRouteImport.update({
+  id: '/fake-call',
+  path: '/fake-call',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedContactsRoute = AuthenticatedContactsRouteImport.update({
   id: '/contacts',
   path: '/contacts',
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/auth': typeof AuthRoute
   '/contacts': typeof AuthenticatedContactsRoute
+  '/fake-call': typeof AuthenticatedFakeCallRoute
   '/guardian': typeof AuthenticatedGuardianRoute
   '/places': typeof AuthenticatedPlacesRoute
   '/routes-map': typeof AuthenticatedRoutesMapRoute
@@ -77,6 +84,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/contacts': typeof AuthenticatedContactsRoute
+  '/fake-call': typeof AuthenticatedFakeCallRoute
   '/guardian': typeof AuthenticatedGuardianRoute
   '/places': typeof AuthenticatedPlacesRoute
   '/routes-map': typeof AuthenticatedRoutesMapRoute
@@ -89,6 +97,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/contacts': typeof AuthenticatedContactsRoute
+  '/_authenticated/fake-call': typeof AuthenticatedFakeCallRoute
   '/_authenticated/guardian': typeof AuthenticatedGuardianRoute
   '/_authenticated/places': typeof AuthenticatedPlacesRoute
   '/_authenticated/routes-map': typeof AuthenticatedRoutesMapRoute
@@ -102,6 +111,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/contacts'
+    | '/fake-call'
     | '/guardian'
     | '/places'
     | '/routes-map'
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
   to:
     | '/auth'
     | '/contacts'
+    | '/fake-call'
     | '/guardian'
     | '/places'
     | '/routes-map'
@@ -122,6 +133,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/contacts'
+    | '/_authenticated/fake-call'
     | '/_authenticated/guardian'
     | '/_authenticated/places'
     | '/_authenticated/routes-map'
@@ -194,6 +206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGuardianRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/fake-call': {
+      id: '/_authenticated/fake-call'
+      path: '/fake-call'
+      fullPath: '/fake-call'
+      preLoaderRoute: typeof AuthenticatedFakeCallRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/contacts': {
       id: '/_authenticated/contacts'
       path: '/contacts'
@@ -206,6 +225,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedContactsRoute: typeof AuthenticatedContactsRoute
+  AuthenticatedFakeCallRoute: typeof AuthenticatedFakeCallRoute
   AuthenticatedGuardianRoute: typeof AuthenticatedGuardianRoute
   AuthenticatedPlacesRoute: typeof AuthenticatedPlacesRoute
   AuthenticatedRoutesMapRoute: typeof AuthenticatedRoutesMapRoute
@@ -215,6 +235,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedContactsRoute: AuthenticatedContactsRoute,
+  AuthenticatedFakeCallRoute: AuthenticatedFakeCallRoute,
   AuthenticatedGuardianRoute: AuthenticatedGuardianRoute,
   AuthenticatedPlacesRoute: AuthenticatedPlacesRoute,
   AuthenticatedRoutesMapRoute: AuthenticatedRoutesMapRoute,
