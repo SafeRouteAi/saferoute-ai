@@ -10,9 +10,5 @@ export const Route = createFileRoute("/_authenticated")({
     }
     return { userId: data.session.user.id };
   },
-  component: () => (
-    <AppShell>
-      <Outlet />
-    </AppShell>
-  ),
+  component: AppShell,
 });
