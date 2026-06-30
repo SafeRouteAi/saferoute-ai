@@ -14,7 +14,213 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      emergency_contacts: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          phone: string
+          priority: number
+          relationship: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          phone: string
+          priority?: number
+          relationship?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          phone?: string
+          priority?: number
+          relationship?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      route_history: {
+        Row: {
+          chosen_route_label: string | null
+          created_at: string
+          destination: string
+          id: string
+          origin: string
+          safety_score: number | null
+          user_id: string
+        }
+        Insert: {
+          chosen_route_label?: string | null
+          created_at?: string
+          destination: string
+          id?: string
+          origin: string
+          safety_score?: number | null
+          user_id: string
+        }
+        Update: {
+          chosen_route_label?: string | null
+          created_at?: string
+          destination?: string
+          id?: string
+          origin?: string
+          safety_score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sos_events: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          id: string
+          lat: number | null
+          lng: number | null
+          location_url: string | null
+          transcript: string | null
+          trigger_type: string
+          user_id: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          location_url?: string | null
+          transcript?: string | null
+          trigger_type: string
+          user_id: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          location_url?: string | null
+          transcript?: string | null
+          trigger_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      text_detections: {
+        Row: {
+          classification: string
+          confidence: number
+          content: string
+          created_at: string
+          explanation: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          classification: string
+          confidence: number
+          content: string
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          classification?: string
+          confidence?: number
+          content?: string
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          auto_guardian: boolean
+          dark_mode: boolean
+          language: string
+          shake_sos: boolean
+          updated_at: string
+          user_id: string
+          voice_sensitivity: number
+        }
+        Insert: {
+          auto_guardian?: boolean
+          dark_mode?: boolean
+          language?: string
+          shake_sos?: boolean
+          updated_at?: string
+          user_id: string
+          voice_sensitivity?: number
+        }
+        Update: {
+          auto_guardian?: boolean
+          dark_mode?: boolean
+          language?: string
+          shake_sos?: boolean
+          updated_at?: string
+          user_id?: string
+          voice_sensitivity?: number
+        }
+        Relationships: []
+      }
+      voice_detections: {
+        Row: {
+          classification: string
+          confidence: number
+          created_at: string
+          id: string
+          transcript: string
+          user_id: string
+        }
+        Insert: {
+          classification: string
+          confidence: number
+          created_at?: string
+          id?: string
+          transcript: string
+          user_id: string
+        }
+        Update: {
+          classification?: string
+          confidence?: number
+          created_at?: string
+          id?: string
+          transcript?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
