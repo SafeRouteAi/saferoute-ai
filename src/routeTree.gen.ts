@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedTextDetectRouteImport } from './routes/_authenticated/text-detect'
+import { Route as AuthenticatedRoutesMapRouteImport } from './routes/_authenticated/routes-map'
 import { Route as AuthenticatedPlacesRouteImport } from './routes/_authenticated/places'
 import { Route as AuthenticatedGuardianRouteImport } from './routes/_authenticated/guardian'
 import { Route as AuthenticatedContactsRouteImport } from './routes/_authenticated/contacts'
@@ -42,6 +43,11 @@ const AuthenticatedTextDetectRoute = AuthenticatedTextDetectRouteImport.update({
   path: '/text-detect',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedRoutesMapRoute = AuthenticatedRoutesMapRouteImport.update({
+  id: '/routes-map',
+  path: '/routes-map',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedPlacesRoute = AuthenticatedPlacesRouteImport.update({
   id: '/places',
   path: '/places',
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/contacts': typeof AuthenticatedContactsRoute
   '/guardian': typeof AuthenticatedGuardianRoute
   '/places': typeof AuthenticatedPlacesRoute
+  '/routes-map': typeof AuthenticatedRoutesMapRoute
   '/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
 }
@@ -72,6 +79,7 @@ export interface FileRoutesByTo {
   '/contacts': typeof AuthenticatedContactsRoute
   '/guardian': typeof AuthenticatedGuardianRoute
   '/places': typeof AuthenticatedPlacesRoute
+  '/routes-map': typeof AuthenticatedRoutesMapRoute
   '/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
   '/': typeof AuthenticatedIndexRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/_authenticated/contacts': typeof AuthenticatedContactsRoute
   '/_authenticated/guardian': typeof AuthenticatedGuardianRoute
   '/_authenticated/places': typeof AuthenticatedPlacesRoute
+  '/_authenticated/routes-map': typeof AuthenticatedRoutesMapRoute
   '/_authenticated/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
     | '/contacts'
     | '/guardian'
     | '/places'
+    | '/routes-map'
     | '/text-detect'
     | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/contacts'
     | '/guardian'
     | '/places'
+    | '/routes-map'
     | '/text-detect'
     | '/api/chat'
     | '/'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/_authenticated/contacts'
     | '/_authenticated/guardian'
     | '/_authenticated/places'
+    | '/_authenticated/routes-map'
     | '/_authenticated/text-detect'
     | '/api/chat'
     | '/_authenticated/'
@@ -161,6 +173,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTextDetectRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/routes-map': {
+      id: '/_authenticated/routes-map'
+      path: '/routes-map'
+      fullPath: '/routes-map'
+      preLoaderRoute: typeof AuthenticatedRoutesMapRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/places': {
       id: '/_authenticated/places'
       path: '/places'
@@ -189,6 +208,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedContactsRoute: typeof AuthenticatedContactsRoute
   AuthenticatedGuardianRoute: typeof AuthenticatedGuardianRoute
   AuthenticatedPlacesRoute: typeof AuthenticatedPlacesRoute
+  AuthenticatedRoutesMapRoute: typeof AuthenticatedRoutesMapRoute
   AuthenticatedTextDetectRoute: typeof AuthenticatedTextDetectRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
@@ -197,6 +217,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedContactsRoute: AuthenticatedContactsRoute,
   AuthenticatedGuardianRoute: AuthenticatedGuardianRoute,
   AuthenticatedPlacesRoute: AuthenticatedPlacesRoute,
+  AuthenticatedRoutesMapRoute: AuthenticatedRoutesMapRoute,
   AuthenticatedTextDetectRoute: AuthenticatedTextDetectRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }
