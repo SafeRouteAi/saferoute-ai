@@ -79,12 +79,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" },
+      { title: "SafeRoute AI — Women's Safety Assistant" },
+      { name: "description", content: "AI-powered women's safety: voice & text emergency detection, safer routes, SOS, and a Guardian chatbot." },
+      { name: "theme-color", content: "#4F378B" },
+      { property: "og:title", content: "SafeRoute AI" },
+      { property: "og:description", content: "Your AI guardian on every journey." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
