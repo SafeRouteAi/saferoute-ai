@@ -107,9 +107,8 @@ function GuardianPage() {
         await supabase.from("voice_detections").insert({
           user_id: u.user.id,
           transcript,
-          intent: result.intent,
+          classification: result.intent,
           confidence: result.confidence,
-          reason: result.reason,
         });
       }
 
