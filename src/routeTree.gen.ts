@@ -13,6 +13,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AuthenticatedTextDetectRouteImport } from './routes/_authenticated/text-detect'
 import { Route as AuthenticatedGuardianRouteImport } from './routes/_authenticated/guardian'
 
 const AuthRoute = AuthRouteImport.update({
@@ -34,6 +35,11 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedTextDetectRoute = AuthenticatedTextDetectRouteImport.update({
+  id: '/text-detect',
+  path: '/text-detect',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedGuardianRoute = AuthenticatedGuardianRouteImport.update({
   id: '/guardian',
   path: '/guardian',
@@ -44,11 +50,13 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/auth': typeof AuthRoute
   '/guardian': typeof AuthenticatedGuardianRoute
+  '/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/guardian': typeof AuthenticatedGuardianRoute
+  '/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
   '/': typeof AuthenticatedIndexRoute
 }
@@ -57,19 +65,21 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/guardian': typeof AuthenticatedGuardianRoute
+  '/_authenticated/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/guardian' | '/api/chat'
+  fullPaths: '/' | '/auth' | '/guardian' | '/text-detect' | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth' | '/guardian' | '/api/chat' | '/'
+  to: '/auth' | '/guardian' | '/text-detect' | '/api/chat' | '/'
   id:
     | '__root__'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/guardian'
+    | '/_authenticated/text-detect'
     | '/api/chat'
     | '/_authenticated/'
   fileRoutesById: FileRoutesById
@@ -110,6 +120,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/text-detect': {
+      id: '/_authenticated/text-detect'
+      path: '/text-detect'
+      fullPath: '/text-detect'
+      preLoaderRoute: typeof AuthenticatedTextDetectRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/guardian': {
       id: '/_authenticated/guardian'
       path: '/guardian'
@@ -122,11 +139,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedGuardianRoute: typeof AuthenticatedGuardianRoute
+  AuthenticatedTextDetectRoute: typeof AuthenticatedTextDetectRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedGuardianRoute: AuthenticatedGuardianRoute,
+  AuthenticatedTextDetectRoute: AuthenticatedTextDetectRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }
 
