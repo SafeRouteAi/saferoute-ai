@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedTextDetectRouteImport } from './routes/_authenticated/text-detect'
+import { Route as AuthenticatedPlacesRouteImport } from './routes/_authenticated/places'
 import { Route as AuthenticatedGuardianRouteImport } from './routes/_authenticated/guardian'
 import { Route as AuthenticatedContactsRouteImport } from './routes/_authenticated/contacts'
 
@@ -41,6 +42,11 @@ const AuthenticatedTextDetectRoute = AuthenticatedTextDetectRouteImport.update({
   path: '/text-detect',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedPlacesRoute = AuthenticatedPlacesRouteImport.update({
+  id: '/places',
+  path: '/places',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedGuardianRoute = AuthenticatedGuardianRouteImport.update({
   id: '/guardian',
   path: '/guardian',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/contacts': typeof AuthenticatedContactsRoute
   '/guardian': typeof AuthenticatedGuardianRoute
+  '/places': typeof AuthenticatedPlacesRoute
   '/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
 }
@@ -64,6 +71,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/contacts': typeof AuthenticatedContactsRoute
   '/guardian': typeof AuthenticatedGuardianRoute
+  '/places': typeof AuthenticatedPlacesRoute
   '/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
   '/': typeof AuthenticatedIndexRoute
@@ -74,6 +82,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/contacts': typeof AuthenticatedContactsRoute
   '/_authenticated/guardian': typeof AuthenticatedGuardianRoute
+  '/_authenticated/places': typeof AuthenticatedPlacesRoute
   '/_authenticated/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
@@ -85,16 +94,25 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contacts'
     | '/guardian'
+    | '/places'
     | '/text-detect'
     | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth' | '/contacts' | '/guardian' | '/text-detect' | '/api/chat' | '/'
+  to:
+    | '/auth'
+    | '/contacts'
+    | '/guardian'
+    | '/places'
+    | '/text-detect'
+    | '/api/chat'
+    | '/'
   id:
     | '__root__'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/contacts'
     | '/_authenticated/guardian'
+    | '/_authenticated/places'
     | '/_authenticated/text-detect'
     | '/api/chat'
     | '/_authenticated/'
@@ -143,6 +161,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTextDetectRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/places': {
+      id: '/_authenticated/places'
+      path: '/places'
+      fullPath: '/places'
+      preLoaderRoute: typeof AuthenticatedPlacesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/guardian': {
       id: '/_authenticated/guardian'
       path: '/guardian'
@@ -163,6 +188,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteChildren {
   AuthenticatedContactsRoute: typeof AuthenticatedContactsRoute
   AuthenticatedGuardianRoute: typeof AuthenticatedGuardianRoute
+  AuthenticatedPlacesRoute: typeof AuthenticatedPlacesRoute
   AuthenticatedTextDetectRoute: typeof AuthenticatedTextDetectRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
@@ -170,6 +196,7 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedContactsRoute: AuthenticatedContactsRoute,
   AuthenticatedGuardianRoute: AuthenticatedGuardianRoute,
+  AuthenticatedPlacesRoute: AuthenticatedPlacesRoute,
   AuthenticatedTextDetectRoute: AuthenticatedTextDetectRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }
