@@ -83,11 +83,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "SafeRoute AI — Women's Safety Assistant" },
       { name: "description", content: "AI-powered women's safety: voice & text emergency detection, safer routes, SOS, and a Guardian chatbot." },
       { name: "theme-color", content: "#4F378B" },
-      { property: "og:title", content: "SafeRoute AI" },
-      { property: "og:description", content: "Your AI guardian on every journey." },
+      { property: "og:title", content: "SafeRoute AI — Women's Safety Assistant" },
+      { property: "og:description", content: "AI-powered women's safety: voice & text emergency detection, safer routes, SOS, and a Guardian chatbot." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "SafeRoute AI — Women's Safety Assistant" },
+      { name: "twitter:description", content: "AI-powered women's safety: voice & text emergency detection, safer routes, SOS, and a Guardian chatbot." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/f63cc4a0-dfb9-462c-bfce-ea8508d67c20" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/f63cc4a0-dfb9-462c-bfce-ea8508d67c20" },
     ],
     links: [
       {
