@@ -17,6 +17,8 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
 
   const signIn = async () => {
     setLoading(true);
@@ -40,6 +42,18 @@ function AuthPage() {
     setLoading(false);
     if (error) return toast.error(error.message);
     toast.success("Account created — you can sign in now");
+  };
+
+  const sendReset = async () => {
+    if (!resetEmail) return toast.error("Enter your email");
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) return toast.error(error.message);
+    toast.success("Password reset email sent — check your inbox");
+    setForgotOpen(false);
   };
 
   return (
@@ -76,6 +90,28 @@ function AuthPage() {
             <Button className="w-full" onClick={signIn} disabled={loading || !email || !password}>
               {loading && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}Sign in
             </Button>
+            <button
+              type="button"
+              onClick={() => { setResetEmail(email); setForgotOpen((v) => !v); }}
+              className="w-full text-center text-xs text-primary font-medium mt-1"
+            >
+              Forgot password?
+            </button>
+            {forgotOpen && (
+              <div className="rounded-xl border border-border bg-card p-3 space-y-2">
+                <Label htmlFor="re" className="text-xs">Send reset link to</Label>
+                <Input
+                  id="re"
+                  type="email"
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  placeholder="you@example.com"
+                />
+                <Button size="sm" className="w-full" onClick={sendReset} disabled={loading || !resetEmail}>
+                  {loading && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}Send reset email
+                </Button>
+              </div>
+            )}
           </TabsContent>
           <TabsContent value="signup" className="space-y-3 mt-4">
             <div className="space-y-1.5">
