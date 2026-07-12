@@ -13,7 +13,6 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as AuthenticatedTextDetectRouteImport } from './routes/_authenticated/text-detect'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedRoutesMapRouteImport } from './routes/_authenticated/routes-map'
 import { Route as AuthenticatedPlacesRouteImport } from './routes/_authenticated/places'
@@ -41,11 +40,6 @@ const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedTextDetectRoute = AuthenticatedTextDetectRouteImport.update({
-  id: '/text-detect',
-  path: '/text-detect',
-  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
@@ -99,7 +93,6 @@ export interface FileRoutesByFullPath {
   '/places': typeof AuthenticatedPlacesRoute
   '/routes-map': typeof AuthenticatedRoutesMapRoute
   '/settings': typeof AuthenticatedSettingsRoute
-  '/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesByTo {
@@ -112,7 +105,6 @@ export interface FileRoutesByTo {
   '/places': typeof AuthenticatedPlacesRoute
   '/routes-map': typeof AuthenticatedRoutesMapRoute
   '/settings': typeof AuthenticatedSettingsRoute
-  '/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
   '/': typeof AuthenticatedIndexRoute
 }
@@ -128,7 +120,6 @@ export interface FileRoutesById {
   '/_authenticated/places': typeof AuthenticatedPlacesRoute
   '/_authenticated/routes-map': typeof AuthenticatedRoutesMapRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
-  '/_authenticated/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
 }
@@ -145,7 +136,6 @@ export interface FileRouteTypes {
     | '/places'
     | '/routes-map'
     | '/settings'
-    | '/text-detect'
     | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -158,7 +148,6 @@ export interface FileRouteTypes {
     | '/places'
     | '/routes-map'
     | '/settings'
-    | '/text-detect'
     | '/api/chat'
     | '/'
   id:
@@ -173,7 +162,6 @@ export interface FileRouteTypes {
     | '/_authenticated/places'
     | '/_authenticated/routes-map'
     | '/_authenticated/settings'
-    | '/_authenticated/text-detect'
     | '/api/chat'
     | '/_authenticated/'
   fileRoutesById: FileRoutesById
@@ -213,13 +201,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/chat'
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/text-detect': {
-      id: '/_authenticated/text-detect'
-      path: '/text-detect'
-      fullPath: '/text-detect'
-      preLoaderRoute: typeof AuthenticatedTextDetectRouteImport
-      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
@@ -289,7 +270,6 @@ interface AuthenticatedRouteChildren {
   AuthenticatedPlacesRoute: typeof AuthenticatedPlacesRoute
   AuthenticatedRoutesMapRoute: typeof AuthenticatedRoutesMapRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
-  AuthenticatedTextDetectRoute: typeof AuthenticatedTextDetectRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
@@ -302,7 +282,6 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedPlacesRoute: AuthenticatedPlacesRoute,
   AuthenticatedRoutesMapRoute: AuthenticatedRoutesMapRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
-  AuthenticatedTextDetectRoute: AuthenticatedTextDetectRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }
 
@@ -318,13 +297,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
