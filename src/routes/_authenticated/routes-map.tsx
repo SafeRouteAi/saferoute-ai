@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Lightbulb, Users, AlertTriangle, Clock, Navigation, Search, Locate, X, Footprints, Car, Bike } from "lucide-react";
+import { Loader2, Lightbulb, Users, AlertTriangle, Clock, Navigation, Search, Locate, X, Footprints, Car, Bike, MapPin } from "lucide-react";
 import { getCurrentPosition } from "@/lib/sos";
 import { computeRoutes, nearbyPlaces, autocompletePlaces } from "@/lib/maps.functions";
 import { scoreRoute } from "@/lib/ai.functions";
