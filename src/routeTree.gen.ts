@@ -9,11 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as AuthenticatedTextDetectRouteImport } from './routes/_authenticated/text-detect'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedRoutesMapRouteImport } from './routes/_authenticated/routes-map'
 import { Route as AuthenticatedPlacesRouteImport } from './routes/_authenticated/places'
@@ -21,8 +21,14 @@ import { Route as AuthenticatedGuardianRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedFakeCallRouteImport } from './routes/_authenticated/fake-call'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedContactsRouteImport } from './routes/_authenticated/contacts'
+import { Route as AuthenticatedCheckInRouteImport } from './routes/_authenticated/check-in'
 import { Route as AuthenticatedChatRouteImport } from './routes/_authenticated/chat'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -41,11 +47,6 @@ const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedTextDetectRoute = AuthenticatedTextDetectRouteImport.update({
-  id: '/text-detect',
-  path: '/text-detect',
-  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
@@ -82,6 +83,11 @@ const AuthenticatedContactsRoute = AuthenticatedContactsRouteImport.update({
   path: '/contacts',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedCheckInRoute = AuthenticatedCheckInRouteImport.update({
+  id: '/check-in',
+  path: '/check-in',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedChatRoute = AuthenticatedChatRouteImport.update({
   id: '/chat',
   path: '/chat',
@@ -91,7 +97,9 @@ const AuthenticatedChatRoute = AuthenticatedChatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/chat': typeof AuthenticatedChatRoute
+  '/check-in': typeof AuthenticatedCheckInRoute
   '/contacts': typeof AuthenticatedContactsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/fake-call': typeof AuthenticatedFakeCallRoute
@@ -99,12 +107,13 @@ export interface FileRoutesByFullPath {
   '/places': typeof AuthenticatedPlacesRoute
   '/routes-map': typeof AuthenticatedRoutesMapRoute
   '/settings': typeof AuthenticatedSettingsRoute
-  '/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/chat': typeof AuthenticatedChatRoute
+  '/check-in': typeof AuthenticatedCheckInRoute
   '/contacts': typeof AuthenticatedContactsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/fake-call': typeof AuthenticatedFakeCallRoute
@@ -112,7 +121,6 @@ export interface FileRoutesByTo {
   '/places': typeof AuthenticatedPlacesRoute
   '/routes-map': typeof AuthenticatedRoutesMapRoute
   '/settings': typeof AuthenticatedSettingsRoute
-  '/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
   '/': typeof AuthenticatedIndexRoute
 }
@@ -120,7 +128,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/chat': typeof AuthenticatedChatRoute
+  '/_authenticated/check-in': typeof AuthenticatedCheckInRoute
   '/_authenticated/contacts': typeof AuthenticatedContactsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/fake-call': typeof AuthenticatedFakeCallRoute
@@ -128,7 +138,6 @@ export interface FileRoutesById {
   '/_authenticated/places': typeof AuthenticatedPlacesRoute
   '/_authenticated/routes-map': typeof AuthenticatedRoutesMapRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
-  '/_authenticated/text-detect': typeof AuthenticatedTextDetectRoute
   '/api/chat': typeof ApiChatRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
 }
@@ -137,7 +146,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/reset-password'
     | '/chat'
+    | '/check-in'
     | '/contacts'
     | '/dashboard'
     | '/fake-call'
@@ -145,12 +156,13 @@ export interface FileRouteTypes {
     | '/places'
     | '/routes-map'
     | '/settings'
-    | '/text-detect'
     | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
+    | '/reset-password'
     | '/chat'
+    | '/check-in'
     | '/contacts'
     | '/dashboard'
     | '/fake-call'
@@ -158,14 +170,15 @@ export interface FileRouteTypes {
     | '/places'
     | '/routes-map'
     | '/settings'
-    | '/text-detect'
     | '/api/chat'
     | '/'
   id:
     | '__root__'
     | '/_authenticated'
     | '/auth'
+    | '/reset-password'
     | '/_authenticated/chat'
+    | '/_authenticated/check-in'
     | '/_authenticated/contacts'
     | '/_authenticated/dashboard'
     | '/_authenticated/fake-call'
@@ -173,7 +186,6 @@ export interface FileRouteTypes {
     | '/_authenticated/places'
     | '/_authenticated/routes-map'
     | '/_authenticated/settings'
-    | '/_authenticated/text-detect'
     | '/api/chat'
     | '/_authenticated/'
   fileRoutesById: FileRoutesById
@@ -181,11 +193,19 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -213,13 +233,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/chat'
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/text-detect': {
-      id: '/_authenticated/text-detect'
-      path: '/text-detect'
-      fullPath: '/text-detect'
-      preLoaderRoute: typeof AuthenticatedTextDetectRouteImport
-      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
@@ -270,6 +283,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContactsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/check-in': {
+      id: '/_authenticated/check-in'
+      path: '/check-in'
+      fullPath: '/check-in'
+      preLoaderRoute: typeof AuthenticatedCheckInRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/chat': {
       id: '/_authenticated/chat'
       path: '/chat'
@@ -282,6 +302,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedChatRoute: typeof AuthenticatedChatRoute
+  AuthenticatedCheckInRoute: typeof AuthenticatedCheckInRoute
   AuthenticatedContactsRoute: typeof AuthenticatedContactsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFakeCallRoute: typeof AuthenticatedFakeCallRoute
@@ -289,12 +310,12 @@ interface AuthenticatedRouteChildren {
   AuthenticatedPlacesRoute: typeof AuthenticatedPlacesRoute
   AuthenticatedRoutesMapRoute: typeof AuthenticatedRoutesMapRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
-  AuthenticatedTextDetectRoute: typeof AuthenticatedTextDetectRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedChatRoute: AuthenticatedChatRoute,
+  AuthenticatedCheckInRoute: AuthenticatedCheckInRoute,
   AuthenticatedContactsRoute: AuthenticatedContactsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFakeCallRoute: AuthenticatedFakeCallRoute,
@@ -302,7 +323,6 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedPlacesRoute: AuthenticatedPlacesRoute,
   AuthenticatedRoutesMapRoute: AuthenticatedRoutesMapRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
-  AuthenticatedTextDetectRoute: AuthenticatedTextDetectRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }
 
@@ -313,6 +333,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport

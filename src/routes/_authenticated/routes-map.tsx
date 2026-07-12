@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Lightbulb, Users, AlertTriangle, Clock, Navigation, Search, Locate, X, Footprints, Car, Bike } from "lucide-react";
+import { Loader2, Lightbulb, Users, AlertTriangle, Clock, Navigation, Search, Locate, X, Footprints, Car, Bike, MapPin } from "lucide-react";
 import { getCurrentPosition } from "@/lib/sos";
-import { computeRoutes, nearbyPlaces } from "@/lib/maps.functions";
+import { computeRoutes, nearbyPlaces, autocompletePlaces } from "@/lib/maps.functions";
 import { scoreRoute } from "@/lib/ai.functions";
 import { timeOfDayRisk } from "@/lib/sample-data";
 import { supabase } from "@/integrations/supabase/client";
@@ -48,12 +48,46 @@ function RoutesPage() {
 
   const [origin, setOrigin] = useState<{ lat: number; lng: number } | null>(null);
   const [destText, setDestText] = useState("");
+  const [suggestions, setSuggestions] = useState<{ placeId: string; main: string; secondary: string }[]>([]);
+  const [showSuggest, setShowSuggest] = useState(false);
   const [routes, setRoutes] = useState<ScoredRoute[] | null>(null);
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<Mode>("WALK");
   const [mapReady, setMapReady] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(true);
+
+  // Debounced autocomplete
+  useEffect(() => {
+    if (!destText.trim() || destText.trim().length < 2) {
+      setSuggestions([]);
+      return;
+    }
+    const q = destText;
+    const handle = setTimeout(async () => {
+      try {
+        const res = await autocompletePlaces({
+          data: {
+            input: q,
+            lat: origin?.lat,
+            lng: origin?.lng,
+          },
+        });
+        const items = (res.suggestions ?? [])
+          .map((s) => s.placePrediction)
+          .filter((p): p is NonNullable<typeof p> => !!p)
+          .map((p) => ({
+            placeId: p.placeId,
+            main: p.structuredFormat?.mainText?.text ?? p.text?.text ?? "",
+            secondary: p.structuredFormat?.secondaryText?.text ?? "",
+          }));
+        setSuggestions(items.slice(0, 6));
+      } catch {
+        setSuggestions([]);
+      }
+    }, 220);
+    return () => clearTimeout(handle);
+  }, [destText, origin?.lat, origin?.lng]);
 
   // Init map
   useEffect(() => {
@@ -150,6 +184,7 @@ function RoutesPage() {
   }, [routes, selectedIdx]);
 
   const search = async () => {
+    setShowSuggest(false);
     if (!origin) return toast.error("Waiting for your location…");
     if (!destText.trim()) return;
     setLoading(true);
@@ -270,13 +305,14 @@ function RoutesPage() {
             <Search className="h-4 w-4 text-muted-foreground ml-2 shrink-0" />
             <Input
               value={destText}
-              onChange={(e) => setDestText(e.target.value)}
+              onChange={(e) => { setDestText(e.target.value); setShowSuggest(true); }}
+              onFocus={() => setShowSuggest(true)}
               onKeyDown={(e) => { if (e.key === "Enter") void search(); }}
               placeholder="Where to?"
               className="border-0 bg-transparent shadow-none focus-visible:ring-0 h-9 px-0"
             />
             {destText && (
-              <button onClick={() => { setDestText(""); setRoutes(null); }} className="p-1 text-muted-foreground">
+              <button onClick={() => { setDestText(""); setRoutes(null); setSuggestions([]); }} className="p-1 text-muted-foreground">
                 <X className="h-4 w-4" />
               </button>
             )}
@@ -284,6 +320,31 @@ function RoutesPage() {
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Go"}
             </Button>
           </div>
+
+          {showSuggest && suggestions.length > 0 && (
+            <div className="mt-1 rounded-2xl bg-card border border-border shadow-lg overflow-hidden">
+              {suggestions.map((s) => (
+                <button
+                  key={s.placeId}
+                  onClick={() => {
+                    setDestText(s.main);
+                    setShowSuggest(false);
+                    setSuggestions([]);
+                    setTimeout(() => void search(), 0);
+                  }}
+                  className="w-full text-left px-3 py-2.5 hover:bg-muted/60 border-b border-border last:border-b-0 flex items-start gap-2"
+                >
+                  <MapPin className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium truncate">{s.main}</div>
+                    {s.secondary && (
+                      <div className="text-xs text-muted-foreground truncate">{s.secondary}</div>
+                    )}
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Mode chips */}
           <div className="mt-2 flex gap-2 justify-center">
@@ -400,7 +461,10 @@ function RoutesPage() {
                   </div>
                   <div className="text-xs text-muted-foreground truncate">
                     <Clock className="h-3 w-3 inline mr-1" />
-                    Lighting {r.lighting} · Crowd {r.crowd} · Crime {r.crime}
+                    Lighting {r.lighting} · Crowd {r.crowd} ·{" "}
+                    <span style={{ color: safetyColor(100 - r.crime), fontWeight: 600 }}>
+                      Crime {r.crime}
+                    </span>
                   </div>
                 </div>
                 <div

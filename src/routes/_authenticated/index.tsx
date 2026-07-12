@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Logo } from "@/components/Logo";
 import { SOSButton } from "@/components/SOSButton";
 import { QuickAction } from "@/components/QuickAction";
-import { Mic, MessageSquareText, Map, Users, Compass, PhoneCall, Sparkles, MapPin } from "lucide-react";
+import { Mic, TimerReset, Map, Users, Compass, PhoneCall, Sparkles, MapPin } from "lucide-react";
 import { todaySafetyTip, timeOfDayRisk } from "@/lib/sample-data";
 import { getCurrentPosition } from "@/lib/sos";
 import { supabase } from "@/integrations/supabase/client";
@@ -70,8 +70,8 @@ function Home() {
         <QuickAction to="/guardian" icon={Mic} label="Voice Alert" color="primary">
           Guardian Mode
         </QuickAction>
-        <QuickAction to="/text-detect" icon={MessageSquareText} label="Text Alert" color="navy">
-          AI classifier
+        <QuickAction to="/check-in" icon={TimerReset} label="Check-In Timer" color="navy">
+          Auto-SOS if late
         </QuickAction>
         <QuickAction to="/routes-map" icon={Map} label="Safe Route" color="safe">
           Compare paths

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Phone, PhoneOff, PhoneCall } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { startRingtone, stopRingtone } from "@/lib/ringtone";
 
 export const Route = createFileRoute("/_authenticated/fake-call")({ component: FakeCall });
 
@@ -27,6 +28,7 @@ function FakeCall() {
   useEffect(() => () => {
     if (timer.current) clearTimeout(timer.current);
     if (tick.current) clearInterval(tick.current);
+    stopRingtone();
   }, []);
 
   const schedule = (delay: number) => {
@@ -35,7 +37,7 @@ function FakeCall() {
     timer.current = setTimeout(() => {
       setShowCall(true);
       setSeconds(0);
-      try { navigator.vibrate?.([400, 200, 400, 200, 400]); } catch { /* */ }
+      try { startRingtone(); } catch { /* */ }
       tick.current = setInterval(() => setSeconds((s) => s + 1), 1000);
     }, delay * 1000);
   };
@@ -44,6 +46,7 @@ function FakeCall() {
     setShowCall(false);
     setArmed(null);
     if (tick.current) clearInterval(tick.current);
+    stopRingtone();
   };
 
   return (

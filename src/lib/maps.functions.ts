@@ -73,3 +73,42 @@ export const nearbyPlaces = createServerFn({ method: "POST" })
     if (!res.ok) throw new Error(`Places failed: ${res.status} ${await res.text()}`);
     return await res.json();
   });
+
+export const autocompletePlaces = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) =>
+    z.object({
+      input: z.string().min(1).max(200),
+      lat: z.number().optional(),
+      lng: z.number().optional(),
+      radius: z.number().default(50000),
+    }).parse(input),
+  )
+  .handler(async ({ data }) => {
+    const body: Record<string, unknown> = { input: data.input };
+    if (data.lat != null && data.lng != null) {
+      body.locationBias = {
+        circle: {
+          center: { latitude: data.lat, longitude: data.lng },
+          radius: data.radius,
+        },
+      };
+    }
+    const res = await fetch(`${GATEWAY}/places/v1/places:autocomplete`, {
+      method: "POST",
+      headers: gwHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(`Autocomplete failed: ${res.status} ${await res.text()}`);
+    return await res.json() as {
+      suggestions?: {
+        placePrediction?: {
+          placeId: string;
+          text?: { text: string };
+          structuredFormat?: {
+            mainText?: { text: string };
+            secondaryText?: { text: string };
+          };
+        };
+      }[];
+    };
+  });
